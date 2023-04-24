@@ -13,6 +13,7 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC #provides a set of predefined conditions that can be used to wait for specific events to occur on a webpage.
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+
 import sys
 
 
@@ -20,7 +21,7 @@ import sys
 options = Options()
 options= uc.ChromeOptions()
 options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
-chrome_driver_binary = "/usr/local/bin/chromedriver"
+#chrome_driver_binary = "/usr/local/bin/chromedriver"
 driver = uc.Chrome(use_subprocess=True, options=options)
 
 driver.maximize_window()
@@ -47,4 +48,25 @@ element.send_keys(Keys.RETURN)
 driver.implicitly_wait(120)
 time.sleep(3)
 
-driver.close()
+element= driver.find_element(By.CSS_SELECTOR, "input[class='Input__InputContent-sc-1o75rg4-3 froUFe']")
+element.send_keys("Korean Garden")
+time.sleep(3)
+element.send_keys(Keys.RETURN)
+driver.implicitly_wait(120)
+
+restaurant_container= driver.find_element(By.XPATH,"//div[@data-anchor-id='StoreLayoutListContainer']")
+
+restaurant_names = restaurant_container.find_elements(By.XPATH, ".//span[@data-telemetry-id='store.name']") #stores all shown restaurant names
+  
+#check if the restaurant is on the food service site
+for restaurant in restaurant_names:
+    if restaurant.text == "Korean Garden":
+    #click on the restaurant to go its page
+        restaurant.click()
+        driver.implicitly_wait(120)
+        time.sleep(3)
+    else:
+        print("Restaurant not found in Doordash.")
+
+
+#driver.close()
