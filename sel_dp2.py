@@ -1,8 +1,8 @@
 # importing required libraries
 import ctypes
 import time
-from typing import List
 import pandas as pd
+import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver import Chrome , ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -18,11 +18,12 @@ import sys
 
 #specify the complete path to the Google Chrome binary.
 options = Options()
-options.add_argument("--kiosk") 
+options= uc.ChromeOptions()
 options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
 chrome_driver_binary = "/usr/local/bin/chromedriver"
-driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
+driver = uc.Chrome(use_subprocess=True, options=options)
 
+driver.maximize_window()
 
 #Take the user input to obtain the URL of the website to be scraped, and web scrape the page.
 val = "https://www.doordash.com/en-CA/"
@@ -34,18 +35,16 @@ if get_url == val:  #ensure that the correct url has been opened
     page_source = driver.page_source # get the entire HTML source code of a webpage as a string
 
 
-
-driver.implicitly_wait(220)
+driver.implicitly_wait(120)
 driver.switch_to.window(driver.window_handles[0])
-time.sleep(5)
-
-driver.find_element(By.CSS_SELECTOR, "input[class='Input__InputContent-sc-1o75rg4-3 froUFe']").send_keys("82 Huber street")
-print("done")
 time.sleep(3)
-# click on search button
-driver.find_element(By.CSS_SELECTOR, "button[class='styles__StyledButtonRoot-sc-1ldytso-0 eupmAi']").click()
+
+element= driver.find_element(By.CSS_SELECTOR, "input[class='Input__InputContent-sc-1o75rg4-3 froUFe']")
+element.send_keys("82 Huber street")
+time.sleep(3)
+element.send_keys(Keys.RETURN)
+
 driver.implicitly_wait(120)
 time.sleep(3)
 
-
-
+driver.close()
