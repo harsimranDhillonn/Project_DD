@@ -78,8 +78,8 @@ try:
     driver.implicitly_wait(120)
     #going to placed into its own function 
    
-    menu_container=  WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@data-anchor-id='MenuItem']")))
-    menu = menu_container.find_element(By.XPATH,".//button[contains(@aria-label, 'House Roll')]")
+    menu_container=  driver.find_element(By.XPATH, "//div[@data-anchor-id='MenuItem']")
+    menu = menu_container.find_element(By.XPATH,"//button[contains(@aria-label, 'House Roll')]")
     price= re.search(r'\$(\d+\.\d+)', menu.text).group(1)
     print(price)
 
