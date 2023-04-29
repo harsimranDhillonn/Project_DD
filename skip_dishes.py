@@ -29,13 +29,11 @@ requested_food_item= input("Please enter what food item you would like to order?
 options = Options()
 options= uc.ChromeOptions()
 options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
-#chrome_driver_binary = "/usr/local/bin/chromedriver"
 driver = uc.Chrome(use_subprocess=True, options=options)
-
 driver.maximize_window()
 
 #Take the user input to obtain the URL of the website to be scraped, and web scrape the page.
-VAL= "https://www.ubereats.com/ca/near-me"
+VAL= "https://www.skipthedishes.com/"
 wait = WebDriverWait(driver, 10) #10 seconds before timing out
 driver.get(VAL) #loads the web page in the selected browser session
 get_url = driver.current_url #get the url of the current page
@@ -47,40 +45,26 @@ driver.implicitly_wait(120)
 driver.switch_to.window(driver.window_handles[0])
 time.sleep(3)
 
-element= driver.find_element(By.CSS_SELECTOR, "input[aria-controls='location-typeahead-home-menu']")
+element= driver.find_element(By.CSS_SELECTOR, "input[aria-label='Enter Your Address - Use the up and down arrow keys to navigate address suggestions.']")
 element.send_keys("")
 time.sleep(3)
 element.send_keys(Keys.RETURN)
-
-driver.implicitly_wait(130)
 time.sleep(3)
+find_restaurants = driver.find_element(By.CSS_SELECTOR, "button[class*='MuiButton-containedSizeLarge-']")
+find_restaurants.click()
 
-element= driver.find_element(By.CSS_SELECTOR, "input[aria-controls='search-suggestions-typeahead-menu']")
-element.send_keys("Pizza Depot")
-time.sleep(3)
-element.send_keys(Keys.RETURN)
 driver.implicitly_wait(120)
+element= driver.find_element(By.CSS_SELECTOR, "input[placeholder='Search Cuisines, Restaurants, or Items']")
+element.send_keys("Kimchi Sushi")
 
+driver.implicitly_wait(120)
+time.sleep(2)
 
+restaurant_path= driver.find_element(By.CSS_SELECTOR, "span[class='styles__Title-czubko-4 hLParj']")
 try:
-    restaurant_container = driver.find_element(By.XPATH, "//div[@data-testid='store-card']")
-    restaurant = restaurant_container.find_element(By.XPATH, ".//h3[contains(text(), 'Pizza Depot')]")
-    restaurant.click()
-    driver.implicitly_wait(120)
-    time.sleep(5)
-    '''
-    exit_button =driver.find_element(By.CSS_SELECTOR, "path[d='m21.1 5.1-2.2-2.2-6.9 7-6.9-7-2.2 2.2 7 6.9-7 6.9 2.2 2.2 6.9-7 6.9 7 2.2-2.2-7-6.9 7-6.9Z']")
-    # click the button
-    if exit_button is not None and exit_button.is_displayed():
-        exit_button.click()
-    '''
-    
     price_element = driver.find_element(By.XPATH, "//span[contains(text(), '$') and contains(text(), 'Delivery Fee')]")
-    if price_element is not None:
-        price = price_element.text.split()[-3]
-        print("\n\tUber Eats' Delivery fee:" + price)
-    else:
-        print("\n\tUber Eats' Delivery fee: Restaurant is closed on Uber Eats")
-    
-except NoSuchElementException:
-    print("Restaurant not found.")
+    price = price_element.text.split()[-3]
+except IndexError:
+    print("Restaurant Not Found")
+else:
+    print("\n\tSkip the dishes' Delivery fee: "+ price)
