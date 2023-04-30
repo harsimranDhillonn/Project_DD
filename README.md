@@ -1,4 +1,4 @@
-# Project_DD
+# Price Comparison
 
 # About
 The project stored in main.py utilizes the power of the Selenium framework to perform web scraping of restaurant food items prices and delivery fees from three different food services: Doordash, Uber Eats, and Skip the Dishes. 
