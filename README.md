@@ -15,6 +15,6 @@ As there are no available APIs for these delivery services, I used Selenium, a p
 # To note:
 - As it would be time consuming and a hassle for users to enter credentials on these 3 different delivery service sites the extracted delivery prices are what one would see from a regular account without being Premium. Doordash offers $0 delivery fee for first time orders hence I could only produce it. 
 - Temporary Special offers provided to regular customers are also not considered.
-- Restaurant's need to be open for delivery. (not tested as of latest commit)
+- Restaurant's need to be open for delivery.
 
 Author: Harsimran Dhillon
